@@ -160,7 +160,6 @@ headers = '''
 	linux/gsmmux.h
         linux/net_namespace.h
         linux/nsfs.h
-        linux/raw.h
         linux/securebits.h
         linux/tiocl.h
         linux/version.h
@@ -1897,6 +1896,9 @@ if not is_disabler(exe)
 endif
 
 opt = not get_option('build-raw').disabled()
+if opt
+  cc.has_header('linux/raw.h', required: opt)
+endif
 exe = executable(
   'raw',
   raw_sources,
@@ -2245,6 +2247,7 @@ exe = executable(
   'logger',
   logger_sources,
   include_directories : includes,
+  link_with : [lib_common],
   dependencies : [lib_systemd],
   install_dir : usrbin_exec_dir,
   install : opt,
@@ -2259,6 +2262,7 @@ exe = executable(
   logger_sources,
   include_directories : includes,
   c_args : '-DTEST_LOGGER',
+  link_with : [lib_common],
   dependencies : [lib_systemd])
 if not is_disabler(exe)
   exes += exe
@@ -3049,7 +3053,7 @@ if build_libuuid
     'libuuid/man/uuid_generate_time_safe.3']
 endif
 
-asciidoctor = find_program('asciidoctor')
+asciidoctor = find_program('asciidoctor', required : false)
 if asciidoctor.found()
   foreach adoc : manadocs
     name = adoc.split('/')[-1]
