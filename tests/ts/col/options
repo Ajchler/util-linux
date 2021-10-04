@@ -25,6 +25,7 @@ ts_check_test_command "$TS_CMD_COL"
 
 ts_init_subtest "no-backspaces"
 printf "FIXME" | ts_run $TS_CMD_COL --no-backspaces >> $TS_OUTPUT 2>> $TS_ERRLOG
+ts_finalize_subtest
 
 ts_init_subtest "pass"
 printf "a\x11b" | ts_run $TS_CMD_COL >> $TS_OUTPUT 2>> $TS_ERRLOG
