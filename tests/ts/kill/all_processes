@@ -40,24 +40,27 @@ check_test_sigreceive $TEST_PID
 [ $? -eq 1 ] || echo "${HELPER_SYMLINK##*/} helper did not start" >> "$TS_OUTPUT"
 
 
-ts_log_both "test 1"
+ts_init_subtest "test-1"
 "$TS_CMD_KILL" ${HELPER_SYMLINK##*/} >> $TS_OUTPUT 2>> $TS_ERRLOG
 if [ $? -ne 1 ]; then
 	echo "kill did not return 1" >> "$TS_OUTPUT"
 fi
+ts_finalize_subtest
 
-ts_log_both "test 2"
+ts_init_subtest "test-2"
 "$TS_CMD_KILL" -a ${HELPER_SYMLINK##*/} >> $TS_OUTPUT 2>> $TS_ERRLOG
 if [ $? -ne 0 ]; then
 	echo "kill did not return 0" >> "$TS_OUTPUT"
 fi
 wait $TEST_PID
+ts_finalize_subtest
 
-ts_log_both "test 3"
+ts_init_subtest "test-3"
 "$TS_CMD_KILL" -a -p ${HELPER_SYMLINK##*/} >> $TS_OUTPUT 2>> $TS_ERRLOG
 if [ $? -ne 1 ]; then
 	echo "kill -a -p did not return 1" >> "$TS_OUTPUT"
 fi
+ts_finalize_subtest
 
 sed -i "s/${HELPER_SYMLINK##*/}/${TS_HELPER_SIGRECEIVE##*/}/" $TS_OUTPUT $TS_ERRLOG
 
