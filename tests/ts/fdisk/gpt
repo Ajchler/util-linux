@@ -38,6 +38,8 @@ function print_layout {
 	echo -ne "\n---layout----------\n" >> $TS_OUTPUT
 	$TS_CMD_FDISK -l ${TEST_IMAGE_NAME} >> $TS_OUTPUT 2>> $TS_ERRLOG
 	echo -ne   "-------------------\n\n" >> $TS_OUTPUT
+
+    ts_fdisk_clean ${TEST_IMAGE_NAME}
 }
 
 
@@ -102,5 +104,4 @@ echo -e "w\n" | $TS_CMD_FDISK ${TEST_IMAGE_NAME} &> /dev/null
 print_layout
 ts_finalize_subtest
 
-ts_fdisk_clean ${TEST_IMAGE_NAME}
 ts_finalize
