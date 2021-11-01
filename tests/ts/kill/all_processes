@@ -45,6 +45,7 @@ ts_init_subtest "test-1"
 if [ $? -ne 1 ]; then
 	echo "kill did not return 1" >> "$TS_OUTPUT"
 fi
+sed -i "s/${HELPER_SYMLINK##*/}/${TS_HELPER_SIGRECEIVE##*/}/" $TS_OUTPUT $TS_ERRLOG
 ts_finalize_subtest
 
 ts_init_subtest "test-2"
@@ -53,6 +54,7 @@ if [ $? -ne 0 ]; then
 	echo "kill did not return 0" >> "$TS_OUTPUT"
 fi
 wait $TEST_PID
+sed -i "s/${HELPER_SYMLINK##*/}/${TS_HELPER_SIGRECEIVE##*/}/" $TS_OUTPUT $TS_ERRLOG
 ts_finalize_subtest
 
 ts_init_subtest "test-3"
@@ -60,9 +62,8 @@ ts_init_subtest "test-3"
 if [ $? -ne 1 ]; then
 	echo "kill -a -p did not return 1" >> "$TS_OUTPUT"
 fi
-ts_finalize_subtest
-
 sed -i "s/${HELPER_SYMLINK##*/}/${TS_HELPER_SIGRECEIVE##*/}/" $TS_OUTPUT $TS_ERRLOG
+ts_finalize_subtest
 
 rm -f "$HELPER_SYMLINK"
 
